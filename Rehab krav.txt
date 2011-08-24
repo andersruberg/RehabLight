@@ -1,0 +1,21 @@
+Patienter ska kunna bokas in. Patienten ska slås upp (dvs. antingen väljas i en lista
+eller sökas fram med hjälp av efternamnet) i patientregistret och därefter
+ska datum och tid bestämmas. Finns inte patienten i registret ska en ny post skapas. 
+Tiden ska ej kollidera med redan bokade tider, 
+men behandlingspatienter och träningspatienter ska kunna vara inbokade samtidigt?
+En räknnare som visar hur många besök patienten har gjort detta året ska räknas upp.
+Inbokningen ska sedan visas i kalendern med tid, datum, namn och telefonnummer.
+En bokad tid ska kunna bokas om eller tas bort helt.
+
+En ny patient ska kunna föras in. Patienten får inte redan finnas i registret.
+Kontroll av personnummer ska göras vid inmatning. Ålder och kön ska räknas ut automatiskt. Kontroll av de inmatade uppgifterna ska göras.
+En patient ska kunna tas bort ur registret och dennes anteckningarar ska raderas.
+
+En dagsnotering ska kunna skrivas. Endast en anteckning ska kunna göras per dag.
+En anteckning kan innehålle flera noteringar. Signeras anteckningen kan inga fler notering göras i den.
+
+En eller flera anteckningar ska kunna skrivas ut. En notering ska då göras i den senaste anteckningen, oavsett
+om den är signerad eller inte?
+
+
+

@@ -1,0 +1,35 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RehabLight", "RehabLight.csproj", "{3F66CD24-06F3-4FCF-82AA-A3806B212E3F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E05B21B-563F-4899-A680-03FA42D28049} = {0E05B21B-563F-4899-A680-03FA42D28049}
+		{AED30227-C02E-4A25-A869-DCEFCE8968BE} = {AED30227-C02E-4A25-A869-DCEFCE8968BE}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RexExControls", "..\RexExTextBox\RexExControls.csproj", "{0E05B21B-563F-4899-A680-03FA42D28049}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomDataGrid", "..\CustomDataGrid\CustomDataGrid.csproj", "{AED30227-C02E-4A25-A869-DCEFCE8968BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3F66CD24-06F3-4FCF-82AA-A3806B212E3F}.Debug|Default.ActiveCfg = Debug|Any CPU
+		{3F66CD24-06F3-4FCF-82AA-A3806B212E3F}.Debug|Default.Build.0 = Debug|Any CPU
+		{3F66CD24-06F3-4FCF-82AA-A3806B212E3F}.Release|Default.ActiveCfg = Release|Any CPU
+		{3F66CD24-06F3-4FCF-82AA-A3806B212E3F}.Release|Default.Build.0 = Release|Any CPU
+		{0E05B21B-563F-4899-A680-03FA42D28049}.Debug|Default.ActiveCfg = Debug|Any CPU
+		{0E05B21B-563F-4899-A680-03FA42D28049}.Debug|Default.Build.0 = Debug|Any CPU
+		{0E05B21B-563F-4899-A680-03FA42D28049}.Release|Default.ActiveCfg = Release|Any CPU
+		{0E05B21B-563F-4899-A680-03FA42D28049}.Release|Default.Build.0 = Release|Any CPU
+		{AED30227-C02E-4A25-A869-DCEFCE8968BE}.Debug|Default.ActiveCfg = Debug|Any CPU
+		{AED30227-C02E-4A25-A869-DCEFCE8968BE}.Debug|Default.Build.0 = Debug|Any CPU
+		{AED30227-C02E-4A25-A869-DCEFCE8968BE}.Release|Default.ActiveCfg = Release|Any CPU
+		{AED30227-C02E-4A25-A869-DCEFCE8968BE}.Release|Default.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

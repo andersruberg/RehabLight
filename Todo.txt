@@ -1,0 +1,47 @@
+Att göra:
+
+hur länge gäller frikort,nytt fält!!!!
+
+notis eller primulaanteckning!!!!
+
+Richtextbox så fraser kan bli i fet stil m.m.
+
+Journalutskrift och kvittoutskrift
+
+Maximera fönster, autosize datagrids
+
+SÄkerhetskopiera automatiskt, säkerhetskopiera till valda destinationer om en destination är otillgänglig
+ska de andra fortfarande gå att använda.
+
+Man ska ej kunna klicka på datagrid kolumnrubriker.
+
+Om patienten betalar själv ska markören hoppa till avgiftsrutan.
+
+Korrigera enskilda besök i Primula, lägg till en flik
+
+Registrerade besök i Primula ska vara sökbar.
+
+SKa ej gå att skriva två anteckningar på samma dag
+
+Dialog för att lägga till diagnosnummer
+
+Statistik:
+NY) Hur många besök av de olika besökstyperna.
+NY) Hur mycket intjänade pengar..
+1) De tio vanligaste huvuddiagnoserna; för varje diagnosnummer, hur många gånger förekommer det under ett år.
+2) Hur många individer som förekommit under året; räkna unika patientid under ett givet år. count(id) where patientid=3 osv, 
+3) Hur många behandlingar görs i genomsnitt för en given diagnos under ett år; COUNT(id) where diagnosis1 = 2 osv
+ms-help://MS.VSCC.2003/MS.MSDNQTR.2003FEB.1033/vdbt7/html/dvconcomparisonoperators.htm
+4) Hur många nybesök respektive återbesök under ett år? 
+
+Påminn om osignerade anteckningar vid avslut
+
+Funktion för säkerhetskopiering: kopiera till förvald plats;
+
+
+besöksorsak
+tidigare sj.
+nuvarande sj
+status
+bedömning
+åtgärd

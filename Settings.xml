@@ -1,0 +1,30 @@
+﻿<?xml version="1.0"?>
+<root description="Settings">
+  <category description="Frasbibliotek">
+    <category description="Behandlingsområde">
+      <item>Axlar</item>
+      <item>Nacke</item>
+      <item>Skuldra</item>
+    </category>
+    <category description="Åtgärd">
+      <item>Akupunktur</item>
+      <item>Laser</item>
+      <item>Massage</item>
+      <item>Testar här också</item>
+      <item>Här blir det bättre</item>
+      <item>Går det här?</item>
+      <item>Här går det nog inte</item>
+    </category>
+    <item>Här går det</item>
+    <item>Fast då blir det så här</item>
+    <item>Fast det gör det väl inte</item>
+  </category>
+  <category description="Diagnosnummer">
+    <item>Spänningshuvudvärk</item>
+    <item>Huvudvärk</item>
+    <item>Magproblem</item>
+    <item>Test</item>
+  </category>
+  <category description="Primula">
+  </category>
+</root>
