@@ -50,8 +50,8 @@ namespace RehabLight
 			nrofPages = 0;
 			currentPageNr = 0;
 
-			fontPageNr = new Font("Times New Roman", 10);
-			fontContent = new Font("Times New Roman", 14);
+			fontPageNr = new Font("Times New Roman", 8);
+			fontContent = new Font("Times New Roman", 12);
 			stringFormat = new StringFormat();
 			stringFormat.Trimming = StringTrimming.Word;
 			stringFormat.SetTabStops(0.0f, new float[] {200.0f});
@@ -194,7 +194,7 @@ namespace RehabLight
 			System.Drawing.Brush brush = System.Drawing.Brushes.Black;
 			SizeF stringSize = new SizeF();
 			
-			System.Drawing.Font font = new Font("Arial", 20, System.Drawing.FontStyle.Bold);
+			System.Drawing.Font font = new Font("Arial", 18, System.Drawing.FontStyle.Bold);
 			string text = "Kvitto";
 			stringSize = e.Graphics.MeasureString(text, font);
 			y = marginTop;
@@ -209,12 +209,12 @@ namespace RehabLight
 			font = new Font("Arial", 12);
 			text = "Vårdgivare:";
 			stringSize = e.Graphics.MeasureString(text, font);
-			y += stringSize.Height+15;
+			y += stringSize.Height+10;
 			e.Graphics.DrawString(text, font, brush, marginLeft, y);
 
 
-			font = new Font("Arial", 16);
-			text = "Leg. sjukgymnast\nDoris Ruberg\nRepslagaregatan 12\n602 32 Norrköping\nTelefon: 011-20 07 50";
+			font = new Font("Arial", 14);
+			text = "Leg. sjukgymnast\nDoris Ruberg\nRepslagaregatan 12\n602 32 Norrköping\nTelefon: 070-6617957";
 			y += stringSize.Height+15;
 			stringSize = e.Graphics.MeasureString(text, font);
 			e.Graphics.DrawString(text, font, brush, marginLeft, y);
@@ -225,10 +225,10 @@ namespace RehabLight
 			font = new Font("Arial", 12);
 			text = "Patient:";
 			stringSize = e.Graphics.MeasureString(text, font);
-			y += 30;
+			y += 10;
 			e.Graphics.DrawString(text, font, brush, marginLeft, y);
 
-			font = new Font("Arial", 16);
+			font = new Font("Arial", 14);
 			text = "Personnummer: " + personnumber + "\nNamn: " + name;
 			y += stringSize.Height+15;
 			stringSize = e.Graphics.MeasureString(text, font);
@@ -237,7 +237,7 @@ namespace RehabLight
 
 			font = new Font("Arial", 14, System.Drawing.FontStyle.Bold);
 			text = "Besöksdatum\tPatientavgift\tKommentar\n\n";
-			y += stringSize.Height+25;
+			y += stringSize.Height+20;
 			stringSize = e.Graphics.MeasureString(text, font);
 			StringFormat stringFormat = new StringFormat();
 			stringFormat.SetTabStops(0.0f, new float[] {200.0f});
@@ -258,6 +258,13 @@ namespace RehabLight
 			text = "Datum\t\t\t\tSign";
 			height += 5;
 
+            stringSize = e.Graphics.MeasureString(text, font);
+            height += stringSize.Height + (e.MarginBounds.Width / 12);
+            font = new Font("Arial", 10);
+            text = "Företaget innehar F-skattsedel. Organisationsnummer: 556471-2221.";
+            stringSize = e.Graphics.MeasureString(text, font);
+            height += stringSize.Height + 5;
+
 			return height;
 		}
 
@@ -272,11 +279,17 @@ namespace RehabLight
 			e.Graphics.DrawString(text, font, brush, e.MarginBounds.Left, y);
 
 			y += stringSize.Height+5;
-			e.Graphics.DrawRectangle(new System.Drawing.Pen(brush, (float)0.5), e.MarginBounds.Left, y, e.MarginBounds.Width/(float)1.5, e.MarginBounds.Width/8);
+			e.Graphics.DrawRectangle(new System.Drawing.Pen(brush, (float)0.5), e.MarginBounds.Left, y, e.MarginBounds.Width/(float)1.5, e.MarginBounds.Width/(float)12);
 			font = new Font("Arial", 10, System.Drawing.FontStyle.Bold);
 			text = "Datum\t\t\t\tSign";
 			y += 5;
 			e.Graphics.DrawString(text, font, brush, e.MarginBounds.Left+2, y);
+
+            stringSize = e.Graphics.MeasureString(text, font); 
+            y+= stringSize.Height + (e.MarginBounds.Width / 12);
+            font = new Font("Arial", 10);
+            text = "Företaget innehar F-skattsedel. Organisationsnummer: 556471-2221.";
+            e.Graphics.DrawString(text, font, brush, e.MarginBounds.Left, y);
 		}
 
 

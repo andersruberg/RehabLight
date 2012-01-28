@@ -33,8 +33,8 @@ namespace RehabLight
 		{
 			connection = new OleDbConnection();
 			
-			//connection.ConnectionString = "Data Source=" + fileName + ";Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Jet OLEDB:Database Password=" + password + ";Jet OLEDB:Encrypt Database=False";
-            connection.ConnectionString = "Data Source=" + fileName + ";Provider=Microsoft.ACE.OLEDB.12.0;User ID=Admin;Jet OLEDB:Database Password=" + password + ";Jet OLEDB:Encrypt Database=False";
+			connection.ConnectionString = "Data Source=" + fileName + ";Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Jet OLEDB:Database Password=" + password + ";Jet OLEDB:Encrypt Database=False";
+            //connection.ConnectionString = "Data Source=" + fileName + ";Provider=Microsoft.ACE.OLEDB.12.0;User ID=Admin;Jet OLEDB:Database Password=" + password + ";Jet OLEDB:Encrypt Database=False";
 			
 			connection.StateChange += new System.Data.StateChangeEventHandler(Connection_StateChange);
 
@@ -64,7 +64,7 @@ namespace RehabLight
 
 			connection.Close();
 
-            dsMaster.Relations.Add("PatientNotes", dsMaster.Tables["Patients"].Columns["patientid"], dsMaster.Tables["Notes"].Columns["patientid"],false);
+            dsMaster.Relations.Add("PatientNotes", dsMaster.Tables["Patients"].Columns["patientid"], dsMaster.Tables["Notes"].Columns["patientid"]);
 
 			dsMaster.Tables["Patients"].Columns["patientid"].AutoIncrement = true;
 			dsMaster.Tables["Patients"].Columns["patientid"].AutoIncrementStep = 1;
