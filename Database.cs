@@ -64,7 +64,7 @@ namespace RehabLight
 
 			connection.Close();
 
-            dsMaster.Relations.Add("PatientNotes", dsMaster.Tables["Patients"].Columns["patientid"], dsMaster.Tables["Notes"].Columns["patientid"]);
+            dsMaster.Relations.Add("PatientNotes", dsMaster.Tables["Patients"].Columns["patientid"], dsMaster.Tables["Notes"].Columns["patientid"],false);
 
 			dsMaster.Tables["Patients"].Columns["patientid"].AutoIncrement = true;
 			dsMaster.Tables["Patients"].Columns["patientid"].AutoIncrementStep = 1;
@@ -938,6 +938,18 @@ namespace RehabLight
 				return false;
 
 		}
+
+        public bool IsPatientIdValid(int id)
+        {
+            DataView dv = new DataView();
+            dv.Table = dsMaster.Tables["Patients"];
+            dv.Sort = "patientid";
+            if (dv.Find(id) != -1)
+                return true;
+            else
+                return false;
+
+        }
 
 		
 

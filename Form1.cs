@@ -948,8 +948,9 @@ namespace RehabLight
 
 		private void btnNewNote_Click(object sender, System.EventArgs e)
 		{
-			if (patient != null)
-			{
+			if ((patient != null) && (database.IsAlreadyExsisting(patient)) && (database.IsPatientIdValid(patient.Id)))
+            {
+                bool bUpdateExistingNote = false; 
 				note = new Note(patient.Id);
 
 				if (database.IsAlreadyExsisting(note))
@@ -962,6 +963,7 @@ namespace RehabLight
 							return;
 						case DialogResult.No:
 							note = database.ReturnAlreadyExsisting(note);
+                            bUpdateExistingNote = true;
 							break;
 					}
 				}
@@ -975,12 +977,20 @@ namespace RehabLight
 
 				if (dlgNewNote.ShowDialog() == System.Windows.Forms.DialogResult.OK)
 				{
-					database.Add(note);
-					//TODO: Select the note
-					note = null;
-					System.Windows.Forms.CurrencyManager cm = (CurrencyManager)BindingContext[dgNotes.DataSource,dgNotes.DataMember];
-					System.Data.DataView dv = (System.Data.DataView) cm.List;
-					dv.Sort = "visitdatetime DESC";
+                    if (!database.IsPatientIdValid(patient.Id))
+                        throw new Exception("Något fel har inträffat, en anteckning som refererar till en patient som inte finns försökte skapas.");
+
+                    if (bUpdateExistingNote)
+                        database.Update(note);
+                    else
+                    {
+                        database.Add(note);
+                        //TODO: Select the note
+                        note = null;
+                        System.Windows.Forms.CurrencyManager cm = (CurrencyManager)BindingContext[dgNotes.DataSource, dgNotes.DataMember];
+                        System.Data.DataView dv = (System.Data.DataView)cm.List;
+                        dv.Sort = "visitdatetime DESC";
+                    }
 				}
 				
 				dlgNewNote.Dispose();
