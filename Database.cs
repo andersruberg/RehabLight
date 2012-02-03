@@ -1,6 +1,6 @@
 using System;
 using System.Data;
-using System.Data.OleDb;
+using System.Data.Odbc;
 using System.Diagnostics;
 using System.Collections;
 
@@ -12,14 +12,14 @@ namespace RehabLight
 	//TODO: Make this class static?
 	public class Database
 	{
-		private System.Data.OleDb.OleDbConnection connection;
+		private System.Data.Odbc.OdbcConnection connection;
 		private System.Data.DataSet dsMaster;
 	
-		private System.Data.OleDb.OleDbDataAdapter daNotes;
-		private System.Data.OleDb.OleDbDataAdapter daPatients;
-		private System.Data.OleDb.OleDbDataAdapter daDiagnosis;
-		private System.Data.OleDb.OleDbDataAdapter daCharges;
-		private System.Data.OleDb.OleDbDataAdapter daJoined;
+		private System.Data.Odbc.OdbcDataAdapter daNotes;
+		private System.Data.Odbc.OdbcDataAdapter daPatients;
+		private System.Data.Odbc.OdbcDataAdapter daDiagnosis;
+		private System.Data.Odbc.OdbcDataAdapter daCharges;
+		private System.Data.Odbc.OdbcDataAdapter daJoined;
 
 		public DataSet DsMaster
 		{
@@ -31,10 +31,9 @@ namespace RehabLight
 		///</summary> 
 		public Database(string fileName, string password)
 		{
-			connection = new OleDbConnection();
-			
-			connection.ConnectionString = "Data Source=" + fileName + ";Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Jet OLEDB:Database Password=" + password + ";Jet OLEDB:Encrypt Database=False";
-            //connection.ConnectionString = "Data Source=" + fileName + ";Provider=Microsoft.ACE.OLEDB.12.0;User ID=Admin;Jet OLEDB:Database Password=" + password + ";Jet OLEDB:Encrypt Database=False";
+			connection = new OdbcConnection();
+
+            connection.ConnectionString = "Driver={MySQL ODBC 3.51 Driver};server=mysql334.loopia.se;uid=admin@d49694;pwd=" + password + ";database=dorisruberg_se;option=3;port=3306";
 			
 			connection.StateChange += new System.Data.StateChangeEventHandler(Connection_StateChange);
 
@@ -86,8 +85,8 @@ namespace RehabLight
 
 		private void SetupDataAdapterJoined()
 		{
-			daJoined = new System.Data.OleDb.OleDbDataAdapter();
-			OleDbCommand selectCmd = new System.Data.OleDb.OleDbCommand();
+			daJoined = new System.Data.Odbc.OdbcDataAdapter();
+			OdbcCommand selectCmd = new System.Data.Odbc.OdbcCommand();
 			selectCmd.Connection = connection;
 
 			
@@ -137,8 +136,8 @@ namespace RehabLight
 
 		private void SetupDataAdapterCharges()
 		{
-			daCharges = new System.Data.OleDb.OleDbDataAdapter();
-			OleDbCommand selectCmd = new System.Data.OleDb.OleDbCommand();
+			daCharges = new System.Data.Odbc.OdbcDataAdapter();
+			OdbcCommand selectCmd = new System.Data.Odbc.OdbcCommand();
 			selectCmd.Connection = connection;
 
 			daCharges.TableMappings.AddRange(new System.Data.Common.DataTableMapping[] {
@@ -154,11 +153,11 @@ namespace RehabLight
 		
 		private void SetupDataAdapterDiagnosis()
 		{
-			daDiagnosis = new System.Data.OleDb.OleDbDataAdapter();
-			OleDbCommand deleteCmd = new System.Data.OleDb.OleDbCommand();
-			OleDbCommand insertCmd = new System.Data.OleDb.OleDbCommand();
-			OleDbCommand selectCmd = new System.Data.OleDb.OleDbCommand();
-			OleDbCommand updateCmd = new System.Data.OleDb.OleDbCommand();
+			daDiagnosis = new System.Data.Odbc.OdbcDataAdapter();
+			OdbcCommand deleteCmd = new System.Data.Odbc.OdbcCommand();
+			OdbcCommand insertCmd = new System.Data.Odbc.OdbcCommand();
+			OdbcCommand selectCmd = new System.Data.Odbc.OdbcCommand();
+			OdbcCommand updateCmd = new System.Data.Odbc.OdbcCommand();
 			selectCmd.Connection = connection;
 			insertCmd.Connection = connection;
 			deleteCmd.Connection = connection;
@@ -175,28 +174,28 @@ namespace RehabLight
 			selectCmd.CommandText = "SELECT diagnosisnumber, diagnosistext, diagnosisid FROM Diagnosis";
 			
 			insertCmd.CommandText = "INSERT INTO Diagnosis(diagnosisnumber, diagnosistext) VALUES (?, ?)";
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("diagnosisnumber", System.Data.OleDb.OleDbType.VarWChar, 7, "diagnosisnumber"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("diagnosistext", System.Data.OleDb.OleDbType.VarWChar, 50, "diagnosistext"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("diagnosisnumber", System.Data.Odbc.OdbcType.VarChar, 7, "diagnosisnumber"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("diagnosistext", System.Data.Odbc.OdbcType.VarChar, 50, "diagnosistext"));
 			
 			updateCmd.CommandText = "UPDATE Diagnosis SET diagnosisnumber = ?, diagnosistext = ? WHERE (diagnosisid = ?) AND (d" +
 				"iagnosisnumber = ? OR ? IS NULL AND diagnosisnumber IS NULL) AND (diagnosistext " +
 				"= ? OR ? IS NULL AND diagnosistext IS NULL)";
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("diagnosisnumber", System.Data.OleDb.OleDbType.VarWChar, 7, "diagnosisnumber"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("diagnosistext", System.Data.OleDb.OleDbType.VarWChar, 50, "diagnosistext"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosisid", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosisid", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosisnumber", System.Data.OleDb.OleDbType.VarWChar, 7, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosisnumber", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosisnumber1", System.Data.OleDb.OleDbType.VarWChar, 7, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosisnumber", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosistext", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosistext", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosistext1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosistext", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("diagnosisnumber", System.Data.Odbc.OdbcType.VarChar, 7, "diagnosisnumber"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("diagnosistext", System.Data.Odbc.OdbcType.VarChar, 50, "diagnosistext"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosisid", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosisid", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosisnumber", System.Data.Odbc.OdbcType.VarChar, 7, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosisnumber", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosisnumber1", System.Data.Odbc.OdbcType.VarChar, 7, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosisnumber", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosistext", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosistext", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosistext1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosistext", System.Data.DataRowVersion.Original, null));
 			
 			deleteCmd.CommandText = "DELETE FROM Diagnosis WHERE (diagnosisid = ?) AND (diagnosisnumber = ? OR ? IS NULL AND di" +
 				"agnosisnumber IS NULL) AND (diagnosistext = ? OR ? IS NULL AND diagnosistext IS " +
 				"NULL)";
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosisid", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosisid", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosisnumber", System.Data.OleDb.OleDbType.VarWChar, 7, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosisnumber", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosisnumber1", System.Data.OleDb.OleDbType.VarWChar, 7, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosisnumber", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosistext", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosistext", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosistext1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosistext", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosisid", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosisid", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosisnumber", System.Data.Odbc.OdbcType.VarChar, 7, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosisnumber", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosisnumber1", System.Data.Odbc.OdbcType.VarChar, 7, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosisnumber", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosistext", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosistext", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosistext1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosistext", System.Data.DataRowVersion.Original, null));
 
 			daDiagnosis.DeleteCommand = deleteCmd;
 			daDiagnosis.InsertCommand = insertCmd;
@@ -206,11 +205,11 @@ namespace RehabLight
 
 		private void SetupDataAdapterNotes()
 		{
-			daNotes = new System.Data.OleDb.OleDbDataAdapter();
-			OleDbCommand deleteCmd = new System.Data.OleDb.OleDbCommand();
-			OleDbCommand insertCmd = new System.Data.OleDb.OleDbCommand();
-			OleDbCommand selectCmd = new System.Data.OleDb.OleDbCommand();
-			OleDbCommand updateCmd = new System.Data.OleDb.OleDbCommand();
+			daNotes = new System.Data.Odbc.OdbcDataAdapter();
+			OdbcCommand deleteCmd = new System.Data.Odbc.OdbcCommand();
+			OdbcCommand insertCmd = new System.Data.Odbc.OdbcCommand();
+			OdbcCommand selectCmd = new System.Data.Odbc.OdbcCommand();
+			OdbcCommand updateCmd = new System.Data.Odbc.OdbcCommand();
 			selectCmd.Connection = connection;
 			insertCmd.Connection = connection;
 			deleteCmd.Connection = connection;
@@ -246,102 +245,102 @@ namespace RehabLight
 				"gned, signeddatetime, visitdatetime, visitnote FROM Notes";
 			
 			insertCmd.CommandText = @"INSERT INTO Notes(actioncode, chargeid, createdatetime, diagnosis1, diagnosis2, diagnosis3, diagnosis4, diagnosis5, newvisit, [note], patientfee, patientid, primula, signed, signeddatetime, visitdatetime, visitnote) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("actioncode", System.Data.OleDb.OleDbType.VarWChar, 5, "actioncode"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("chargeid", System.Data.OleDb.OleDbType.Integer, 0, "chargeid"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("createdatetime", System.Data.OleDb.OleDbType.VarWChar, 16, "createdatetime"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("diagnosis1", System.Data.OleDb.OleDbType.Integer, 0, "diagnosis1"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("diagnosis2", System.Data.OleDb.OleDbType.Integer, 0, "diagnosis2"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("diagnosis3", System.Data.OleDb.OleDbType.Integer, 0, "diagnosis3"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("diagnosis4", System.Data.OleDb.OleDbType.Integer, 0, "diagnosis4"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("diagnosis5", System.Data.OleDb.OleDbType.Integer, 0, "diagnosis5"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("newvisit", System.Data.OleDb.OleDbType.Boolean, 2, "newvisit"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("note", System.Data.OleDb.OleDbType.VarWChar, 0, "note"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("patientfee", System.Data.OleDb.OleDbType.VarWChar, 3, "patientfee"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("patientid", System.Data.OleDb.OleDbType.Integer, 0, "patientid"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("primula", System.Data.OleDb.OleDbType.Boolean, 2, "primula"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("signed", System.Data.OleDb.OleDbType.Boolean, 2, "signed"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("signeddatetime", System.Data.OleDb.OleDbType.VarWChar, 16, "signeddatetime"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("visitdatetime", System.Data.OleDb.OleDbType.VarWChar, 16, "visitdatetime"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("visitnote", System.Data.OleDb.OleDbType.Boolean, 2, "visitnote"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("actioncode", System.Data.Odbc.OdbcType.VarChar, 5, "actioncode"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("chargeid", System.Data.Odbc.OdbcType.Int, 0, "chargeid"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("createdatetime", System.Data.Odbc.OdbcType.VarChar, 16, "createdatetime"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("diagnosis1", System.Data.Odbc.OdbcType.Int, 0, "diagnosis1"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("diagnosis2", System.Data.Odbc.OdbcType.Int, 0, "diagnosis2"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("diagnosis3", System.Data.Odbc.OdbcType.Int, 0, "diagnosis3"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("diagnosis4", System.Data.Odbc.OdbcType.Int, 0, "diagnosis4"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("diagnosis5", System.Data.Odbc.OdbcType.Int, 0, "diagnosis5"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("newvisit", System.Data.Odbc.OdbcType.TinyInt, 2, "newvisit"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("note", System.Data.Odbc.OdbcType.VarChar, 0, "note"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("patientfee", System.Data.Odbc.OdbcType.VarChar, 3, "patientfee"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("patientid", System.Data.Odbc.OdbcType.Int, 0, "patientid"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("primula", System.Data.Odbc.OdbcType.TinyInt, 2, "primula"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("signed", System.Data.Odbc.OdbcType.TinyInt, 2, "signed"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("signeddatetime", System.Data.Odbc.OdbcType.VarChar, 16, "signeddatetime"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("visitdatetime", System.Data.Odbc.OdbcType.VarChar, 16, "visitdatetime"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("visitnote", System.Data.Odbc.OdbcType.TinyInt, 2, "visitnote"));
 			
 			updateCmd.CommandText = @"UPDATE Notes SET actioncode = ?, chargeid = ?, createdatetime = ?, diagnosis1 = ?, diagnosis2 = ?, diagnosis3 = ?, diagnosis4 = ?, diagnosis5 = ?, newvisit = ?, [note] = ?, patientfee = ?, patientid = ?, primula = ?, signed = ?, signeddatetime = ?, visitdatetime = ?, visitnote = ? WHERE (noteid = ?) AND (actioncode = ? OR ? IS NULL AND actioncode IS NULL) AND (chargeid = ? OR ? IS NULL AND chargeid IS NULL) AND (createdatetime = ? OR ? IS NULL AND createdatetime IS NULL) AND (diagnosis1 = ? OR ? IS NULL AND diagnosis1 IS NULL) AND (diagnosis2 = ? OR ? IS NULL AND diagnosis2 IS NULL) AND (diagnosis3 = ? OR ? IS NULL AND diagnosis3 IS NULL) AND (diagnosis4 = ? OR ? IS NULL AND diagnosis4 IS NULL) AND (diagnosis5 = ? OR ? IS NULL AND diagnosis5 IS NULL) AND (newvisit = ?) AND (patientfee = ? OR ? IS NULL AND patientfee IS NULL) AND (patientid = ? OR ? IS NULL AND patientid IS NULL) AND (primula = ?) AND (signed = ?) AND (signeddatetime = ? OR ? IS NULL AND signeddatetime IS NULL) AND (visitdatetime = ? OR ? IS NULL AND visitdatetime IS NULL) AND (visitnote = ?)";
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("actioncode", System.Data.OleDb.OleDbType.VarWChar, 5, "actioncode"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("chargeid", System.Data.OleDb.OleDbType.Integer, 0, "chargeid"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("createdatetime", System.Data.OleDb.OleDbType.VarWChar, 16, "createdatetime"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("diagnosis1", System.Data.OleDb.OleDbType.Integer, 0, "diagnosis1"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("diagnosis2", System.Data.OleDb.OleDbType.Integer, 0, "diagnosis2"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("diagnosis3", System.Data.OleDb.OleDbType.Integer, 0, "diagnosis3"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("diagnosis4", System.Data.OleDb.OleDbType.Integer, 0, "diagnosis4"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("diagnosis5", System.Data.OleDb.OleDbType.Integer, 0, "diagnosis5"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("newvisit", System.Data.OleDb.OleDbType.Boolean, 2, "newvisit"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("note", System.Data.OleDb.OleDbType.VarWChar, 0, "note"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("patientfee", System.Data.OleDb.OleDbType.VarWChar, 3, "patientfee"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("patientid", System.Data.OleDb.OleDbType.Integer, 0, "patientid"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("primula", System.Data.OleDb.OleDbType.Boolean, 2, "primula"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("signed", System.Data.OleDb.OleDbType.Boolean, 2, "signed"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("signeddatetime", System.Data.OleDb.OleDbType.VarWChar, 16, "signeddatetime"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("visitdatetime", System.Data.OleDb.OleDbType.VarWChar, 16, "visitdatetime"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("visitnote", System.Data.OleDb.OleDbType.Boolean, 2, "visitnote"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_id", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "noteid", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_actioncode", System.Data.OleDb.OleDbType.VarWChar, 5, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "actioncode", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_actioncode1", System.Data.OleDb.OleDbType.VarWChar, 5, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "actioncode", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_chargeid", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "chargeid", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_chargeid1", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "chargeid", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_createdatetime", System.Data.OleDb.OleDbType.VarWChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "createdatetime", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_createdatetime1", System.Data.OleDb.OleDbType.VarWChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "createdatetime", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis1", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis1", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis11", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis1", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis2", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis2", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis21", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis2", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis3", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis3", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis31", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis3", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis4", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis4", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis41", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis4", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis5", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis5", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis51", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis5", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_newvisit", System.Data.OleDb.OleDbType.Boolean, 2, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "newvisit", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_patientfee", System.Data.OleDb.OleDbType.VarWChar, 3, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientfee", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_patientfee1", System.Data.OleDb.OleDbType.VarWChar, 3, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientfee", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_patientid", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientid", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_patientid1", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientid", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_primula", System.Data.OleDb.OleDbType.Boolean, 2, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "primula", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_signed", System.Data.OleDb.OleDbType.Boolean, 2, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "signed", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_signeddatetime", System.Data.OleDb.OleDbType.VarWChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "signeddatetime", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_signeddatetime1", System.Data.OleDb.OleDbType.VarWChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "signeddatetime", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_visitdatetime", System.Data.OleDb.OleDbType.VarWChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "visitdatetime", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_visitdatetime1", System.Data.OleDb.OleDbType.VarWChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "visitdatetime", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_visitnote", System.Data.OleDb.OleDbType.Boolean, 2, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "visitnote", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("actioncode", System.Data.Odbc.OdbcType.VarChar, 5, "actioncode"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("chargeid", System.Data.Odbc.OdbcType.Int, 0, "chargeid"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("createdatetime", System.Data.Odbc.OdbcType.VarChar, 16, "createdatetime"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("diagnosis1", System.Data.Odbc.OdbcType.Int, 0, "diagnosis1"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("diagnosis2", System.Data.Odbc.OdbcType.Int, 0, "diagnosis2"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("diagnosis3", System.Data.Odbc.OdbcType.Int, 0, "diagnosis3"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("diagnosis4", System.Data.Odbc.OdbcType.Int, 0, "diagnosis4"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("diagnosis5", System.Data.Odbc.OdbcType.Int, 0, "diagnosis5"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("newvisit", System.Data.Odbc.OdbcType.TinyInt, 2, "newvisit"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("note", System.Data.Odbc.OdbcType.VarChar, 0, "note"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("patientfee", System.Data.Odbc.OdbcType.VarChar, 3, "patientfee"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("patientid", System.Data.Odbc.OdbcType.Int, 0, "patientid"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("primula", System.Data.Odbc.OdbcType.TinyInt, 2, "primula"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("signed", System.Data.Odbc.OdbcType.TinyInt, 2, "signed"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("signeddatetime", System.Data.Odbc.OdbcType.VarChar, 16, "signeddatetime"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("visitdatetime", System.Data.Odbc.OdbcType.VarChar, 16, "visitdatetime"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("visitnote", System.Data.Odbc.OdbcType.TinyInt, 2, "visitnote"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_id", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "noteid", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_actioncode", System.Data.Odbc.OdbcType.VarChar, 5, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "actioncode", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_actioncode1", System.Data.Odbc.OdbcType.VarChar, 5, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "actioncode", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_chargeid", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "chargeid", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_chargeid1", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "chargeid", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_createdatetime", System.Data.Odbc.OdbcType.VarChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "createdatetime", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_createdatetime1", System.Data.Odbc.OdbcType.VarChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "createdatetime", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis1", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis1", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis11", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis1", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis2", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis2", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis21", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis2", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis3", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis3", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis31", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis3", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis4", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis4", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis41", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis4", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis5", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis5", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis51", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis5", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_newvisit", System.Data.Odbc.OdbcType.TinyInt, 2, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "newvisit", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_patientfee", System.Data.Odbc.OdbcType.VarChar, 3, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientfee", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_patientfee1", System.Data.Odbc.OdbcType.VarChar, 3, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientfee", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_patientid", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientid", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_patientid1", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientid", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_primula", System.Data.Odbc.OdbcType.TinyInt, 2, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "primula", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_signed", System.Data.Odbc.OdbcType.TinyInt, 2, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "signed", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_signeddatetime", System.Data.Odbc.OdbcType.VarChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "signeddatetime", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_signeddatetime1", System.Data.Odbc.OdbcType.VarChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "signeddatetime", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_visitdatetime", System.Data.Odbc.OdbcType.VarChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "visitdatetime", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_visitdatetime1", System.Data.Odbc.OdbcType.VarChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "visitdatetime", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_visitnote", System.Data.Odbc.OdbcType.TinyInt, 2, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "visitnote", System.Data.DataRowVersion.Original, null));
 			
 			deleteCmd.CommandText = @"DELETE FROM Notes WHERE (noteid = ?) AND (actioncode = ? OR ? IS NULL AND actioncode IS NULL) AND (chargeid = ? OR ? IS NULL AND chargeid IS NULL) AND (createdatetime = ? OR ? IS NULL AND createdatetime IS NULL) AND (diagnosis1 = ? OR ? IS NULL AND diagnosis1 IS NULL) AND (diagnosis2 = ? OR ? IS NULL AND diagnosis2 IS NULL) AND (diagnosis3 = ? OR ? IS NULL AND diagnosis3 IS NULL) AND (diagnosis4 = ? OR ? IS NULL AND diagnosis4 IS NULL) AND (diagnosis5 = ? OR ? IS NULL AND diagnosis5 IS NULL) AND (newvisit = ?) AND (patientfee = ? OR ? IS NULL AND patientfee IS NULL) AND (patientid = ? OR ? IS NULL AND patientid IS NULL) AND (primula = ?) AND (signed = ?) AND (signeddatetime = ? OR ? IS NULL AND signeddatetime IS NULL) AND (visitdatetime = ? OR ? IS NULL AND visitdatetime IS NULL) AND (visitnote = ?)";
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_id", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "noteid", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_actioncode", System.Data.OleDb.OleDbType.VarWChar, 5, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "actioncode", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_actioncode1", System.Data.OleDb.OleDbType.VarWChar, 5, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "actioncode", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_chargeid", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "chargeid", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_chargeid1", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "chargeid", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_createdatetime", System.Data.OleDb.OleDbType.VarWChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "createdatetime", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_createdatetime1", System.Data.OleDb.OleDbType.VarWChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "createdatetime", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis1", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis1", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis11", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis1", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis2", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis2", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis21", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis2", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis3", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis3", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis31", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis3", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis4", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis4", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis41", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis4", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis5", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis5", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_diagnosis51", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis5", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_newvisit", System.Data.OleDb.OleDbType.Boolean, 2, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "newvisit", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_patientfee", System.Data.OleDb.OleDbType.VarWChar, 3, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientfee", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_patientfee1", System.Data.OleDb.OleDbType.VarWChar, 3, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientfee", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_patientid", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientid", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_patientid1", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientid", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_primula", System.Data.OleDb.OleDbType.Boolean, 2, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "primula", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_signed", System.Data.OleDb.OleDbType.Boolean, 2, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "signed", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_signeddatetime", System.Data.OleDb.OleDbType.VarWChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "signeddatetime", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_signeddatetime1", System.Data.OleDb.OleDbType.VarWChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "signeddatetime", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_visitdatetime", System.Data.OleDb.OleDbType.VarWChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "visitdatetime", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_visitdatetime1", System.Data.OleDb.OleDbType.VarWChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "visitdatetime", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_visitnote", System.Data.OleDb.OleDbType.Boolean, 2, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "visitnote", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_id", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "noteid", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_actioncode", System.Data.Odbc.OdbcType.VarChar, 5, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "actioncode", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_actioncode1", System.Data.Odbc.OdbcType.VarChar, 5, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "actioncode", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_chargeid", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "chargeid", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_chargeid1", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "chargeid", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_createdatetime", System.Data.Odbc.OdbcType.VarChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "createdatetime", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_createdatetime1", System.Data.Odbc.OdbcType.VarChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "createdatetime", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis1", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis1", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis11", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis1", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis2", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis2", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis21", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis2", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis3", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis3", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis31", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis3", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis4", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis4", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis41", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis4", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis5", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis5", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_diagnosis51", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "diagnosis5", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_newvisit", System.Data.Odbc.OdbcType.TinyInt, 2, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "newvisit", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_patientfee", System.Data.Odbc.OdbcType.VarChar, 3, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientfee", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_patientfee1", System.Data.Odbc.OdbcType.VarChar, 3, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientfee", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_patientid", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientid", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_patientid1", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientid", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_primula", System.Data.Odbc.OdbcType.TinyInt, 2, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "primula", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_signed", System.Data.Odbc.OdbcType.TinyInt, 2, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "signed", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_signeddatetime", System.Data.Odbc.OdbcType.VarChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "signeddatetime", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_signeddatetime1", System.Data.Odbc.OdbcType.VarChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "signeddatetime", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_visitdatetime", System.Data.Odbc.OdbcType.VarChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "visitdatetime", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_visitdatetime1", System.Data.Odbc.OdbcType.VarChar, 16, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "visitdatetime", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_visitnote", System.Data.Odbc.OdbcType.TinyInt, 2, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "visitnote", System.Data.DataRowVersion.Original, null));
 		
 			
 			daNotes.DeleteCommand = deleteCmd;
@@ -354,11 +353,11 @@ namespace RehabLight
 
 		private void SetupDataAdapterPatients()
 		{
-			daPatients = new System.Data.OleDb.OleDbDataAdapter();
-			OleDbCommand deleteCmd = new System.Data.OleDb.OleDbCommand();
-			OleDbCommand insertCmd = new System.Data.OleDb.OleDbCommand();
-			OleDbCommand selectCmd = new System.Data.OleDb.OleDbCommand();
-			OleDbCommand updateCmd = new System.Data.OleDb.OleDbCommand();
+			daPatients = new System.Data.Odbc.OdbcDataAdapter();
+			OdbcCommand deleteCmd = new System.Data.Odbc.OdbcCommand();
+			OdbcCommand insertCmd = new System.Data.Odbc.OdbcCommand();
+			OdbcCommand selectCmd = new System.Data.Odbc.OdbcCommand();
+			OdbcCommand updateCmd = new System.Data.Odbc.OdbcCommand();
 			selectCmd.Connection = connection;
 			insertCmd.Connection = connection;
 			deleteCmd.Connection = connection;
@@ -386,80 +385,80 @@ namespace RehabLight
 				" personnumber, street, surname, workphone, zipcode) VALUES (?, ?, ?, ?, ?, ?, ?," +
 				" ?, ?, ?, ?)";
 			
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("city", System.Data.OleDb.OleDbType.VarWChar, 50, "city"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("firstname", System.Data.OleDb.OleDbType.VarWChar, 50, "firstname"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("freecarddate", System.Data.OleDb.OleDbType.VarWChar, 10, "freecarddate"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("homephone", System.Data.OleDb.OleDbType.VarWChar, 50, "homephone"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("info", System.Data.OleDb.OleDbType.VarWChar, 50, "info"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("mobilephone", System.Data.OleDb.OleDbType.VarWChar, 50, "mobilephone"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("personnumber", System.Data.OleDb.OleDbType.VarWChar, 50, "personnumber"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("street", System.Data.OleDb.OleDbType.VarWChar, 50, "street"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("surname", System.Data.OleDb.OleDbType.VarWChar, 50, "surname"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("workphone", System.Data.OleDb.OleDbType.VarWChar, 50, "workphone"));
-			insertCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("zipcode", System.Data.OleDb.OleDbType.VarWChar, 50, "zipcode"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("city", System.Data.Odbc.OdbcType.VarChar, 50, "city"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("firstname", System.Data.Odbc.OdbcType.VarChar, 50, "firstname"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("freecarddate", System.Data.Odbc.OdbcType.VarChar, 10, "freecarddate"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("homephone", System.Data.Odbc.OdbcType.VarChar, 50, "homephone"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("info", System.Data.Odbc.OdbcType.VarChar, 50, "info"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("mobilephone", System.Data.Odbc.OdbcType.VarChar, 50, "mobilephone"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("personnumber", System.Data.Odbc.OdbcType.VarChar, 50, "personnumber"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("street", System.Data.Odbc.OdbcType.VarChar, 50, "street"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("surname", System.Data.Odbc.OdbcType.VarChar, 50, "surname"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("workphone", System.Data.Odbc.OdbcType.VarChar, 50, "workphone"));
+			insertCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("zipcode", System.Data.Odbc.OdbcType.VarChar, 50, "zipcode"));
 			
 			updateCmd.CommandText = @"UPDATE Patients SET city = ?, firstname = ?, freecarddate = ?, homephone = ?, info = ?, mobilephone = ?, personnumber = ?, street = ?, surname = ?, workphone = ?, zipcode = ? WHERE (patientid = ?) AND (city = ? OR ? IS NULL AND city IS NULL) AND (firstname = ? OR ? IS NULL AND firstname IS NULL) AND (freecarddate = ? OR ? IS NULL AND freecarddate IS NULL) AND (homephone = ? OR ? IS NULL AND homephone IS NULL) AND (info = ? OR ? IS NULL AND info IS NULL) AND (mobilephone = ? OR ? IS NULL AND mobilephone IS NULL) AND (personnumber = ? OR ? IS NULL AND personnumber IS NULL) AND (street = ? OR ? IS NULL AND street IS NULL) AND (surname = ? OR ? IS NULL AND surname IS NULL) AND (workphone = ? OR ? IS NULL AND workphone IS NULL) AND (zipcode = ? OR ? IS NULL AND zipcode IS NULL)";
 			
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("city", System.Data.OleDb.OleDbType.VarWChar, 50, "city"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("firstname", System.Data.OleDb.OleDbType.VarWChar, 50, "firstname"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("freecarddate", System.Data.OleDb.OleDbType.VarWChar, 10, "freecarddate"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("homephone", System.Data.OleDb.OleDbType.VarWChar, 50, "homephone"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("info", System.Data.OleDb.OleDbType.VarWChar, 50, "info"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("mobilephone", System.Data.OleDb.OleDbType.VarWChar, 50, "mobilephone"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("personnumber", System.Data.OleDb.OleDbType.VarWChar, 50, "personnumber"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("street", System.Data.OleDb.OleDbType.VarWChar, 50, "street"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("surname", System.Data.OleDb.OleDbType.VarWChar, 50, "surname"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("workphone", System.Data.OleDb.OleDbType.VarWChar, 50, "workphone"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("zipcode", System.Data.OleDb.OleDbType.VarWChar, 50, "zipcode"));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_id", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientid", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_city", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "city", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_city1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "city", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_firstname", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "firstname", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_firstname1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "firstname", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_freecarddate", System.Data.OleDb.OleDbType.VarWChar, 10, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "freecarddate", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_freecarddate1", System.Data.OleDb.OleDbType.VarWChar, 10, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "freecarddate", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_homephone", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "homephone", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_homephone1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "homephone", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_info", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "info", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_info1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "info", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_mobilephone", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "mobilephone", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_mobilephone1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "mobilephone", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_personnumber", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "personnumber", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_personnumber1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "personnumber", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_street", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "street", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_street1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "street", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_surname", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "surname", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_surname1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "surname", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_workphone", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "workphone", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_workphone1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "workphone", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_zipcode", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "zipcode", System.Data.DataRowVersion.Original, null));
-			updateCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_zipcode1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "zipcode", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("city", System.Data.Odbc.OdbcType.VarChar, 50, "city"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("firstname", System.Data.Odbc.OdbcType.VarChar, 50, "firstname"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("freecarddate", System.Data.Odbc.OdbcType.VarChar, 10, "freecarddate"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("homephone", System.Data.Odbc.OdbcType.VarChar, 50, "homephone"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("info", System.Data.Odbc.OdbcType.VarChar, 50, "info"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("mobilephone", System.Data.Odbc.OdbcType.VarChar, 50, "mobilephone"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("personnumber", System.Data.Odbc.OdbcType.VarChar, 50, "personnumber"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("street", System.Data.Odbc.OdbcType.VarChar, 50, "street"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("surname", System.Data.Odbc.OdbcType.VarChar, 50, "surname"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("workphone", System.Data.Odbc.OdbcType.VarChar, 50, "workphone"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("zipcode", System.Data.Odbc.OdbcType.VarChar, 50, "zipcode"));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_id", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientid", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_city", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "city", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_city1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "city", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_firstname", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "firstname", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_firstname1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "firstname", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_freecarddate", System.Data.Odbc.OdbcType.VarChar, 10, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "freecarddate", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_freecarddate1", System.Data.Odbc.OdbcType.VarChar, 10, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "freecarddate", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_homephone", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "homephone", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_homephone1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "homephone", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_info", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "info", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_info1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "info", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_mobilephone", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "mobilephone", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_mobilephone1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "mobilephone", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_personnumber", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "personnumber", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_personnumber1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "personnumber", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_street", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "street", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_street1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "street", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_surname", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "surname", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_surname1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "surname", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_workphone", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "workphone", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_workphone1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "workphone", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_zipcode", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "zipcode", System.Data.DataRowVersion.Original, null));
+			updateCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_zipcode1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "zipcode", System.Data.DataRowVersion.Original, null));
 			
 			deleteCmd.CommandText = @"DELETE FROM Patients WHERE (patientid = ?) AND (city = ? OR ? IS NULL AND city IS NULL) AND (firstname = ? OR ? IS NULL AND firstname IS NULL) AND (freecarddate = ? OR ? IS NULL AND freecarddate IS NULL) AND (homephone = ? OR ? IS NULL AND homephone IS NULL) AND (info = ? OR ? IS NULL AND info IS NULL) AND (mobilephone = ? OR ? IS NULL AND mobilephone IS NULL) AND (personnumber = ? OR ? IS NULL AND personnumber IS NULL) AND (street = ? OR ? IS NULL AND street IS NULL) AND (surname = ? OR ? IS NULL AND surname IS NULL) AND (workphone = ? OR ? IS NULL AND workphone IS NULL) AND (zipcode = ? OR ? IS NULL AND zipcode IS NULL)";
 			
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_id", System.Data.OleDb.OleDbType.Integer, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientid", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_city", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "city", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_city1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "city", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_firstname", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "firstname", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_firstname1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "firstname", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_freecarddate", System.Data.OleDb.OleDbType.VarWChar, 10, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "freecarddate", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_freecarddate1", System.Data.OleDb.OleDbType.VarWChar, 10, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "freecarddate", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_homephone", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "homephone", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_homephone1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "homephone", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_info", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "info", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_info1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "info", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_mobilephone", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "mobilephone", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_mobilephone1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "mobilephone", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_personnumber", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "personnumber", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_personnumber1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "personnumber", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_street", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "street", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_street1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "street", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_surname", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "surname", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_surname1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "surname", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_workphone", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "workphone", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_workphone1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "workphone", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_zipcode", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "zipcode", System.Data.DataRowVersion.Original, null));
-			deleteCmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("Original_zipcode1", System.Data.OleDb.OleDbType.VarWChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "zipcode", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_id", System.Data.Odbc.OdbcType.Int, 0, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "patientid", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_city", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "city", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_city1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "city", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_firstname", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "firstname", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_firstname1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "firstname", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_freecarddate", System.Data.Odbc.OdbcType.VarChar, 10, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "freecarddate", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_freecarddate1", System.Data.Odbc.OdbcType.VarChar, 10, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "freecarddate", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_homephone", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "homephone", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_homephone1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "homephone", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_info", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "info", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_info1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "info", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_mobilephone", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "mobilephone", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_mobilephone1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "mobilephone", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_personnumber", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "personnumber", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_personnumber1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "personnumber", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_street", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "street", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_street1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "street", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_surname", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "surname", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_surname1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "surname", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_workphone", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "workphone", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_workphone1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "workphone", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_zipcode", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "zipcode", System.Data.DataRowVersion.Original, null));
+			deleteCmd.Parameters.Add(new System.Data.Odbc.OdbcParameter("Original_zipcode1", System.Data.Odbc.OdbcType.VarChar, 50, System.Data.ParameterDirection.Input, false, ((System.Byte)(0)), ((System.Byte)(0)), "zipcode", System.Data.DataRowVersion.Original, null));
 
 
 			daPatients.DeleteCommand = deleteCmd;
@@ -1021,7 +1020,7 @@ namespace RehabLight
 		{
 			if (aSqlCommand.Length == 0)
 				return -1;
-			OleDbCommand command = new OleDbCommand(aSqlCommand, connection);
+			OdbcCommand command = new OdbcCommand(aSqlCommand, connection);
 			connection.Open();
 			int result = -1;
 			try 
