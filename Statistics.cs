@@ -116,18 +116,18 @@ namespace RehabLight
 			switch ((string)lbStatistics.SelectedItem)
 			{
 				case statNrofVisits:
-					queryString = "SELECT COUNT(noteid) FROM notes WHERE (visitdatetime BETWEEN #" + fromDate + "# AND #" + toDate + "#)";
+					queryString = "SELECT COUNT(noteid) FROM Notes WHERE (visitdatetime BETWEEN DATE('" + fromDate + "') AND DATE('" + toDate + "'))";
 					break;
 				case statNrofNewVisits :
-					queryString = "SELECT COUNT(noteid) FROM notes WHERE ((newvisit=TRUE) AND (visitdatetime BETWEEN #" + fromDate + "# AND #" + toDate + "#))";
+					queryString = "SELECT COUNT(noteid) FROM Notes WHERE ((newvisit=TRUE) AND (visitdatetime BETWEEN DATE('" + fromDate + "') AND DATE('" + toDate + "')))";
 					break;
 				case statNrofPatients :
-					queryString = "SELECT COUNT(patientid) FROM patients WHERE EXSISTS (SELECT COUNT(notes.noteid) FROM notes WHERE ((patients.patientid = notes.patientid) AND (notes.visitdatetime BETWEEN #" + fromDate + "# AND #" + toDate + "#)))";
+					queryString = "SELECT COUNT(patientid) FROM Patients WHERE EXSISTS (SELECT COUNT(notes.noteid) FROM notes WHERE ((patients.patientid = notes.patientid) AND (notes.visitdatetime BETWEEN DATE('" + fromDate + "') AND DATE('" + toDate + "'))))";
 					break;
 				case statNrofVisitsDiagnosis :
 					if (selectedDiagnosis != null)
 					{
-						queryString = "SELECT COUNT(noteid) from notes WHERE diagnosis1=" + selectedDiagnosis.Id;
+						queryString = "SELECT COUNT(noteid) from Notes WHERE diagnosis1=" + selectedDiagnosis.Id;
 					}
 					else
 					{

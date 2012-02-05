@@ -1006,7 +1006,7 @@ namespace RehabLight
 
 				Utils.Month selectedMonth = (Utils.Month) cmbPickMonthToPrimula.SelectedItem;
 
-				string rowFilter = "primula = false AND visitnote = true AND SUBSTRING(visitdatetime,1,4)=" + year.ToString();
+				string rowFilter = "primula = 0 AND visitnote = 1 AND SUBSTRING(visitdatetime,1,4)=" + year.ToString();
 			
 				if (selectedMonth.MonthNumber != 0)
 					rowFilter = rowFilter + " AND SUBSTRING(visitdatetime,6,2)=" + selectedMonth.MonthNumber.ToString();
@@ -1150,16 +1150,16 @@ namespace RehabLight
 				selectedMonth = (Utils.Month) cmbPickMonthInPrimula.SelectedItem;
 
 			
-			string queryString = "SELECT COUNT(Notes.noteid) FROM (Notes INNER JOIN Charges ON Charges.chargeid = Notes.chargeid) WHERE (Notes.visitnote = TRUE) AND (MID([Notes.visitdatetime], 1, 4) = " + year.ToString() + ")";
+			string queryString = "SELECT COUNT(Notes.noteid) FROM (Notes INNER JOIN Charges ON Charges.chargeid = Notes.chargeid) WHERE (Notes.visitnote = 1) AND (MID((Notes.visitdatetime), 1, 4) = " + year.ToString() + ")";
 			
 			
 			if (selectedMonth.MonthNumber != 0)
-				queryString += " AND (MID([Notes.visitdatetime], 6, 2) = " +selectedMonth.MonthNumber + ")";
+				queryString += " AND (MID((Notes.visitdatetime), 6, 2) = " +selectedMonth.MonthNumber + ")";
 
 			if (tabControl.SelectedIndex == 0)
-				queryString += "AND (Notes.primula = FALSE)";
+				queryString += "AND (Notes.primula = 0)";
 			else
-				queryString += "AND (Notes.primula = TRUE)";
+				queryString += "AND (Notes.primula = 1)";
 
 			string queryStringFreecard = queryString + "AND (Charges.primulatext = 'F')";
 			string queryStringPatientPays = queryString + "AND (Charges.primulatext = 'J')";
