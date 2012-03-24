@@ -176,6 +176,11 @@
     <Compile Include="PromtVisitDateTime.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,6 +194,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Content Include="App.ico" />
+    <None Include="Resources\landstinget.bmp" />
     <EmbeddedResource Include="AddDiagnosisNumber.resx">
       <DependentUpon>AddDiagnosisNumber.cs</DependentUpon>
     </EmbeddedResource>
@@ -221,6 +227,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PromtVisitDateTime.resx">
       <DependentUpon>PromtVisitDateTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>

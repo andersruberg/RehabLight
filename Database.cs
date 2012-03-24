@@ -34,6 +34,7 @@ namespace RehabLight
             connection = new MySqlConnection();
 
             connection.ConnectionString = "server=mysql334.loopia.se;uid=doris@d49694;pwd=" + password + ";database=dorisruberg_se;port=3306;Allow User Variables=True";
+            //connection.ConnectionString = "server=localhost;uid=root;pwd=" + password + ";database=dorisruberg_se;port=3306;Allow User Variables=True";
 			
 			connection.StateChange += new System.Data.StateChangeEventHandler(Connection_StateChange);
 
@@ -212,6 +213,9 @@ namespace RehabLight
 			insertCmd.Connection = connection;
 			deleteCmd.Connection = connection;
 			updateCmd.Connection = connection;
+            
+            daNotes.UpdateBatchSize = 0;
+            updateCmd.UpdatedRowSource = UpdateRowSource.None;
 
 			
 			
@@ -647,8 +651,8 @@ namespace RehabLight
 			System.Data.DataView dv = new System.Data.DataView();
 			dv.Table = dsMaster.Tables["Notes"];
 			dv.Sort = "noteid";
-			
-			
+
+            
 			if (note != null)
 			{
 				int index = dv.Find(note.Id);					
@@ -663,8 +667,8 @@ namespace RehabLight
 					throw new Exception(exception.Message + "\n\nAnteckningen kunde inte uppdateras eftersom dess id inte kunde hittas i databasen.");
 				}
 
-				dr.BeginEdit();
-	
+
+                
 				//dr["noteid"] = note.Id;
 				dr["patientId"] = note.PatientId;
 				dr["createdatetime"] = note.CreateDateTime.ToString("g");
@@ -687,13 +691,18 @@ namespace RehabLight
 
 				daNotes.Update(dsMaster, "Notes");
 			}
+            // Update the joined table
+            dsMaster.Tables["Joined"].Clear();
+            daJoined.Fill(dsMaster, "Joined");
 		}
 
 		public void Update(Note[] noteArray)
 		{
 			//Setup a dataview in order to find the note that should be updated
 			System.Data.DataView dv = new System.Data.DataView();
-			dv.Table = dsMaster.Tables["Notes"];
+			DataTable dt = dsMaster.Tables["Notes"];
+
+            dv.Table = dsMaster.Tables["Notes"];
 			dv.Sort = "noteid";
 			
 			foreach (Note note in noteArray)
@@ -712,31 +721,37 @@ namespace RehabLight
 						throw new Exception(exception.Message + "\n\nAnteckningen kunde inte uppdateras eftersom dess id inte kunde hittas i databasen.");
 					}
 
-					dr.BeginEdit();
-	
+                    
+					//dr.BeginEdit();
+	               
 					//dr["noteid"] = note.Id;
-					dr["patientId"] = note.PatientId;
-					dr["createdatetime"] = note.CreateDateTime.ToString("g");
-					dr["signed"] = note.Signed;
-					dr["signeddatetime"] = note.SignedDateTime.ToString("g");
-					dr["newvisit"] = note.NewVisit;
-					dr["note"] = note.JournalNote;
-					dr["primula"] = note.Primula;
-					dr["visitdatetime"] = note.VisitDateTime.ToString("g");
-					dr["chargeid"] = note.ChargeId;
-					dr["patientfee"] = note.PatientFee;
-					dr["diagnosis1"] = note.Diagnosis1;
-					dr["diagnosis2"] = note.Diagnosis2;
-					dr["diagnosis3"] = note.Diagnosis3;
-					dr["diagnosis4"] = note.Diagnosis4;
-					dr["diagnosis5"] = note.Diagnosis5;
-					dr["actioncode"] = note.ActionCode;
-					dr["visitnote"] = note.VisitNote;
-					dr.EndEdit();
+                    
+					dt.Rows[index]["patientId"] = note.PatientId;
+					dt.Rows[index]["createdatetime"] = note.CreateDateTime.ToString("g");
+					dt.Rows[index]["signed"] = note.Signed;
+					dt.Rows[index]["signeddatetime"] = note.SignedDateTime.ToString("g");
+					dt.Rows[index]["newvisit"] = note.NewVisit;
+					dt.Rows[index]["note"] = note.JournalNote;
+					dt.Rows[index]["primula"] = note.Primula;
+					dt.Rows[index]["visitdatetime"] = note.VisitDateTime.ToString("g");
+					dt.Rows[index]["chargeid"] = note.ChargeId;
+					dt.Rows[index]["patientfee"] = note.PatientFee;
+					dt.Rows[index]["diagnosis1"] = note.Diagnosis1;
+					dt.Rows[index]["diagnosis2"] = note.Diagnosis2;
+					dt.Rows[index]["diagnosis3"] = note.Diagnosis3;
+					dt.Rows[index]["diagnosis4"] = note.Diagnosis4;
+					dt.Rows[index]["diagnosis5"] = note.Diagnosis5;
+					dt.Rows[index]["actioncode"] = note.ActionCode;
+					dt.Rows[index]["visitnote"] = note.VisitNote;
+					//dr.EndEdit();
 
 				}
 			}
-			daNotes.Update(dsMaster, "Notes");
+			daNotes.Update(dt);
+
+            // Update the joined table
+            dsMaster.Tables["Joined"].Clear();
+            daJoined.Fill(dsMaster, "Joined");
 		}
 
 		public Note CreateNote(System.Data.DataRow dr)
@@ -1050,9 +1065,9 @@ namespace RehabLight
 				//Debug.WriteLine( "Notes_Row_Changing Event: " + e.Row["note"].ToString() +e.Action.ToString());
 			Debug.WriteLine("Notes_RowChanging: " + e.Action.ToString());
 			//TODO: To update the joined table (do this in a better way)
-			Debug.WriteLine("Joined table is updated");
-			dsMaster.Tables["Joined"].Clear();
-			daJoined.Fill(dsMaster, "Joined");
+			//Debug.WriteLine("Joined table is updated");
+			//dsMaster.Tables["Joined"].Clear();
+			//daJoined.Fill(dsMaster, "Joined");
 		}
 
 		private void Diagnosis_RowChanging( object sender, DataRowChangeEventArgs e )

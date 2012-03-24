@@ -170,7 +170,11 @@ namespace RehabLight
 
 			try 
 			{
-				System.Drawing.Image image = System.Drawing.Image.FromFile(logoFilename);
+
+      
+                
+                //System.Drawing.Image image = System.Drawing.Image.FromFile(logoFilename);
+                System.Drawing.Image image = (System.Drawing.Image)Properties.Resources.landstinget;
 
 				int imageWidth = image.Width;
 				int imageHeight = image.Height;
