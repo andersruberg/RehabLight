@@ -33,8 +33,10 @@ namespace RehabLight
 		{
             connection = new MySqlConnection();
 
-            connection.ConnectionString = "server=mysql334.loopia.se;uid=doris@d49694;pwd=" + password + ";database=dorisruberg_se;port=3306;Allow User Variables=True";
-            //connection.ConnectionString = "server=localhost;uid=root;pwd=" + password + ";database=dorisruberg_se;port=3306;Allow User Variables=True";
+            //connection.ConnectionString = "server=mysql334.loopia.se;uid=doris@d49694;pwd=" + password + ";database=dorisruberg_se;port=3306;Allow User Variables=True";
+
+            //connection.ConnectionString = "server=mysql369.loopia.se;uid=admin@d58195;pwd=" + password + ";database=dorisruberg_se_db_1;Allow User Variables=True";
+            connection.ConnectionString = "server=localhost;uid=root;pwd=" + password + ";database=dorisruberg_se;port=3306;Allow User Variables=True";
 			
 			connection.StateChange += new System.Data.StateChangeEventHandler(Connection_StateChange);
 
@@ -642,7 +644,10 @@ namespace RehabLight
 			
 			dsMaster.Tables["Notes"].Rows.Add(dr);
 			daNotes.Update(dsMaster, "Notes");
-	
+
+            // Update the joined table
+            dsMaster.Tables["Joined"].Clear();
+            daJoined.Fill(dsMaster, "Joined");
 		}
 
 

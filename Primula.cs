@@ -424,7 +424,7 @@ namespace RehabLight
 				note.VisitDateTime = System.DateTime.Parse((string) dv[dataGrid.CurrentRowIndex]["visitdatetime"]);
 				note.VisitNote = (bool)dv[dataGrid.CurrentRowIndex]["visitnote"];
 
-				Debug.WriteLine("Selected note at currentrowindex: " + dataGrid.CurrentRowIndex + ", primula = " + note.Primula.ToString() +" " + note.JournalNote);
+                Debug.WriteLine("noteid = " + note.Id + " patientid = " + note.PatientId + ", selected note at currentrowindex: " + dataGrid.CurrentRowIndex + ", primula = " + note.Primula.ToString());
 			}
 		}
 		#endregion

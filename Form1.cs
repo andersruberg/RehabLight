@@ -68,12 +68,9 @@ namespace RehabLight
 		private System.Windows.Forms.Button btnPrintJournal;
 		private System.Windows.Forms.MenuItem menuItem2;
 		private System.Windows.Forms.MenuItem menyAddDiagnosisNumber;
-		private System.Windows.Forms.ComboBox cmbShowFiltered;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+        private System.Windows.Forms.ComboBox cmbShowFiltered;
 		#endregion
+        private IContainer components;
 
 		#region Initiation
 		public Form1()
@@ -312,395 +309,402 @@ namespace RehabLight
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.mainMenu1 = new System.Windows.Forms.MainMenu();
-			this.menuFile = new System.Windows.Forms.MenuItem();
-			this.menuClose = new System.Windows.Forms.MenuItem();
-			this.menuTools = new System.Windows.Forms.MenuItem();
-			this.menuSettings = new System.Windows.Forms.MenuItem();
-			this.menuPrimula = new System.Windows.Forms.MenuItem();
-			this.menuBackup = new System.Windows.Forms.MenuItem();
-			this.menuItem1 = new System.Windows.Forms.MenuItem();
-			this.menuItem2 = new System.Windows.Forms.MenuItem();
-			this.menyAddDiagnosisNumber = new System.Windows.Forms.MenuItem();
-			this.menuPrint = new System.Windows.Forms.MenuItem();
-			this.menuPrintReciet = new System.Windows.Forms.MenuItem();
-			this.menuItem5 = new System.Windows.Forms.MenuItem();
-			this.menuPreviewJournal = new System.Windows.Forms.MenuItem();
-			this.menuPrintJournal = new System.Windows.Forms.MenuItem();
-			this.menuHelp = new System.Windows.Forms.MenuItem();
-			this.menuHelpcontents = new System.Windows.Forms.MenuItem();
-			this.menuAbout = new System.Windows.Forms.MenuItem();
-			this.tabJournal = new System.Windows.Forms.TabPage();
-			this.groupBox3 = new System.Windows.Forms.GroupBox();
-			this.btnPrintJournal = new System.Windows.Forms.Button();
-			this.btnChangePatient = new System.Windows.Forms.Button();
-			this.btnNewPatient = new System.Windows.Forms.Button();
-			this.txtSearchPatient = new System.Windows.Forms.TextBox();
-			this.dgPatients = new CustomDataGrid.MyDataGrid();
-			this.dgNotes = new CustomDataGrid.MyDataGrid();
-			this.btnSign = new System.Windows.Forms.Button();
-			this.groupBox4 = new System.Windows.Forms.GroupBox();
-			this.cmbShowFiltered = new System.Windows.Forms.ComboBox();
-			this.groupBox5 = new System.Windows.Forms.GroupBox();
-			this.btnNewNote = new System.Windows.Forms.Button();
-			this.btnPrintReciet = new System.Windows.Forms.Button();
-			this.groupBox6 = new System.Windows.Forms.GroupBox();
-			this.btnClearSearchPatient = new System.Windows.Forms.Button();
-			this.tabControl = new System.Windows.Forms.TabControl();
-			this.tabJournal.SuspendLayout();
-			this.groupBox3.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dgPatients)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.dgNotes)).BeginInit();
-			this.groupBox4.SuspendLayout();
-			this.groupBox5.SuspendLayout();
-			this.groupBox6.SuspendLayout();
-			this.tabControl.SuspendLayout();
-			this.SuspendLayout();
-			// 
-			// mainMenu1
-			// 
-			this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																					  this.menuFile,
-																					  this.menuTools,
-																					  this.menuPrint,
-																					  this.menuHelp});
-			// 
-			// menuFile
-			// 
-			this.menuFile.Index = 0;
-			this.menuFile.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																					 this.menuClose});
-			this.menuFile.Text = "Arkiv";
-			// 
-			// menuClose
-			// 
-			this.menuClose.Index = 0;
-			this.menuClose.Text = "Avsluta";
-			this.menuClose.Click += new System.EventHandler(this.menuClose_Click);
-			// 
-			// menuTools
-			// 
-			this.menuTools.Index = 1;
-			this.menuTools.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																					  this.menuSettings,
-																					  this.menuPrimula,
-																					  this.menuBackup,
-																					  this.menuItem1,
-																					  this.menuItem2});
-			this.menuTools.Text = "Verktyg";
-			// 
-			// menuSettings
-			// 
-			this.menuSettings.Index = 0;
-			this.menuSettings.Text = "Inställningar...";
-			this.menuSettings.Click += new System.EventHandler(this.menuSettings_Click);
-			// 
-			// menuPrimula
-			// 
-			this.menuPrimula.Index = 1;
-			this.menuPrimula.Text = "Primula...";
-			this.menuPrimula.Click += new System.EventHandler(this.menuPrimula_Click);
-			// 
-			// menuBackup
-			// 
-			this.menuBackup.Index = 2;
-			this.menuBackup.Text = "Säkerhetskopiera...";
-			this.menuBackup.Click += new System.EventHandler(this.menuBackup_Click);
-			// 
-			// menuItem1
-			// 
-			this.menuItem1.Index = 3;
-			this.menuItem1.Text = "Statistik...";
-			this.menuItem1.Click += new System.EventHandler(this.menuItem1_Click);
-			// 
-			// menuItem2
-			// 
-			this.menuItem2.Index = 4;
-			this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																					  this.menyAddDiagnosisNumber});
-			this.menuItem2.Text = "Diagnosnummer";
-			// 
-			// menyAddDiagnosisNumber
-			// 
-			this.menyAddDiagnosisNumber.Index = 0;
-			this.menyAddDiagnosisNumber.Text = "Lägg till...";
-			this.menyAddDiagnosisNumber.Click += new System.EventHandler(this.menyAddDiagnosisNumber_Click);
-			// 
-			// menuPrint
-			// 
-			this.menuPrint.Index = 2;
-			this.menuPrint.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																					  this.menuPrintReciet,
-																					  this.menuItem5,
-																					  this.menuPreviewJournal,
-																					  this.menuPrintJournal});
-			this.menuPrint.Text = "Utskrifter";
-			// 
-			// menuPrintReciet
-			// 
-			this.menuPrintReciet.Index = 0;
-			this.menuPrintReciet.Text = "Skriv ut kvitto...";
-			this.menuPrintReciet.Click += new System.EventHandler(this.menuPrintReciet_Click);
-			// 
-			// menuItem5
-			// 
-			this.menuItem5.Index = 1;
-			this.menuItem5.Text = "-";
-			// 
-			// menuPreviewJournal
-			// 
-			this.menuPreviewJournal.Index = 2;
-			this.menuPreviewJournal.Text = "Förhandsgranska journal...";
-			this.menuPreviewJournal.Click += new System.EventHandler(this.menuPreviewJournal_Click);
-			// 
-			// menuPrintJournal
-			// 
-			this.menuPrintJournal.Index = 3;
-			this.menuPrintJournal.Text = "Skriv ut journal...";
-			this.menuPrintJournal.Click += new System.EventHandler(this.menuPrintJournal_Click);
-			// 
-			// menuHelp
-			// 
-			this.menuHelp.Enabled = false;
-			this.menuHelp.Index = 3;
-			this.menuHelp.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																					 this.menuHelpcontents,
-																					 this.menuAbout});
-			this.menuHelp.Text = "Hjälp";
-			// 
-			// menuHelpcontents
-			// 
-			this.menuHelpcontents.Index = 0;
-			this.menuHelpcontents.Text = "Hjälp";
-			// 
-			// menuAbout
-			// 
-			this.menuAbout.Index = 1;
-			this.menuAbout.Text = "Om...";
-			// 
-			// tabJournal
-			// 
-			this.tabJournal.BackColor = System.Drawing.Color.Gainsboro;
-			this.tabJournal.Controls.Add(this.groupBox3);
-			this.tabJournal.Controls.Add(this.txtSearchPatient);
-			this.tabJournal.Controls.Add(this.dgPatients);
-			this.tabJournal.Controls.Add(this.dgNotes);
-			this.tabJournal.Controls.Add(this.btnSign);
-			this.tabJournal.Controls.Add(this.groupBox4);
-			this.tabJournal.Controls.Add(this.groupBox5);
-			this.tabJournal.Controls.Add(this.groupBox6);
-			this.tabJournal.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.tabJournal.Location = new System.Drawing.Point(4, 27);
-			this.tabJournal.Name = "tabJournal";
-			this.tabJournal.Size = new System.Drawing.Size(968, 617);
-			this.tabJournal.TabIndex = 1;
-			this.tabJournal.Text = "Journalhantering";
-			// 
-			// groupBox3
-			// 
-			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox3.Controls.Add(this.btnPrintJournal);
-			this.groupBox3.Controls.Add(this.btnChangePatient);
-			this.groupBox3.Controls.Add(this.btnNewPatient);
-			this.groupBox3.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.groupBox3.Location = new System.Drawing.Point(816, 24);
-			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(144, 232);
-			this.groupBox3.TabIndex = 15;
-			this.groupBox3.TabStop = false;
-			this.groupBox3.Text = "Hantera patienter";
-			// 
-			// btnPrintJournal
-			// 
-			this.btnPrintJournal.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.btnPrintJournal.Location = new System.Drawing.Point(16, 160);
-			this.btnPrintJournal.Name = "btnPrintJournal";
-			this.btnPrintJournal.Size = new System.Drawing.Size(120, 40);
-			this.btnPrintJournal.TabIndex = 22;
-			this.btnPrintJournal.Text = "Skriv ut journal...";
-			this.btnPrintJournal.Click += new System.EventHandler(this.btnPrintJournal_Click);
-			// 
-			// btnChangePatient
-			// 
-			this.btnChangePatient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnChangePatient.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.btnChangePatient.Location = new System.Drawing.Point(16, 104);
-			this.btnChangePatient.Name = "btnChangePatient";
-			this.btnChangePatient.Size = new System.Drawing.Size(120, 32);
-			this.btnChangePatient.TabIndex = 12;
-			this.btnChangePatient.Text = "Ändra upgift...";
-			this.btnChangePatient.Click += new System.EventHandler(this.btnChangePatient_Click);
-			// 
-			// btnNewPatient
-			// 
-			this.btnNewPatient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnNewPatient.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.btnNewPatient.Location = new System.Drawing.Point(16, 48);
-			this.btnNewPatient.Name = "btnNewPatient";
-			this.btnNewPatient.Size = new System.Drawing.Size(120, 32);
-			this.btnNewPatient.TabIndex = 11;
-			this.btnNewPatient.Text = "Ny patient...";
-			this.btnNewPatient.Click += new System.EventHandler(this.btnNewPatient_Click);
-			// 
-			// txtSearchPatient
-			// 
-			this.txtSearchPatient.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.txtSearchPatient.Location = new System.Drawing.Point(16, 304);
-			this.txtSearchPatient.Name = "txtSearchPatient";
-			this.txtSearchPatient.Size = new System.Drawing.Size(224, 26);
-			this.txtSearchPatient.TabIndex = 10;
-			this.txtSearchPatient.Text = "";
-			this.txtSearchPatient.TextChanged += new System.EventHandler(this.txtSearchPatient_TextChanged);
-			// 
-			// dgPatients
-			// 
-			this.dgPatients.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.dgPatients.DataMember = "";
-			this.dgPatients.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.dgPatients.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.dgPatients.Location = new System.Drawing.Point(0, 0);
-			this.dgPatients.Name = "dgPatients";
-			this.dgPatients.ReadOnly = true;
-			this.dgPatients.Size = new System.Drawing.Size(808, 272);
-			this.dgPatients.TabIndex = 6;
-			this.dgPatients.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgPatients_MouseDown);
-			this.dgPatients.SizeChanged += new System.EventHandler(this.dgPatients_SizeChanged);
-			this.dgPatients.DoubleClick += new System.EventHandler(this.dgPatients_DoubleClick);
-			this.dgPatients.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dgPatients_MouseUp);
-			// 
-			// dgNotes
-			// 
-			this.dgNotes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.dgNotes.DataMember = "";
-			this.dgNotes.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.dgNotes.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.dgNotes.Location = new System.Drawing.Point(0, 344);
-			this.dgNotes.Name = "dgNotes";
-			this.dgNotes.Size = new System.Drawing.Size(968, 280);
-			this.dgNotes.TabIndex = 0;
-			this.dgNotes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgNotes_MouseDown);
-			this.dgNotes.SizeChanged += new System.EventHandler(this.dgNotes_SizeChanged);
-			this.dgNotes.DoubleClick += new System.EventHandler(this.dgNotes_DoubleClick);
-			this.dgNotes.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dgNotes_MouseUp);
-			// 
-			// btnSign
-			// 
-			this.btnSign.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.btnSign.Location = new System.Drawing.Point(464, 296);
-			this.btnSign.Name = "btnSign";
-			this.btnSign.Size = new System.Drawing.Size(88, 32);
-			this.btnSign.TabIndex = 1;
-			this.btnSign.Text = "Signera";
-			this.btnSign.Click += new System.EventHandler(this.btnSign_Click);
-			// 
-			// groupBox4
-			// 
-			this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox4.Controls.Add(this.cmbShowFiltered);
-			this.groupBox4.Location = new System.Drawing.Point(728, 280);
-			this.groupBox4.Name = "groupBox4";
-			this.groupBox4.Size = new System.Drawing.Size(232, 56);
-			this.groupBox4.TabIndex = 18;
-			this.groupBox4.TabStop = false;
-			this.groupBox4.Text = "Filtrera anteckningar";
-			// 
-			// cmbShowFiltered
-			// 
-			this.cmbShowFiltered.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cmbShowFiltered.Location = new System.Drawing.Point(16, 24);
-			this.cmbShowFiltered.Name = "cmbShowFiltered";
-			this.cmbShowFiltered.Size = new System.Drawing.Size(200, 24);
-			this.cmbShowFiltered.TabIndex = 0;
-			this.cmbShowFiltered.Text = "Välj filter här...";
-			// 
-			// groupBox5
-			// 
-			this.groupBox5.Controls.Add(this.btnNewNote);
-			this.groupBox5.Controls.Add(this.btnPrintReciet);
-			this.groupBox5.Location = new System.Drawing.Point(296, 280);
-			this.groupBox5.Name = "groupBox5";
-			this.groupBox5.Size = new System.Drawing.Size(416, 56);
-			this.groupBox5.TabIndex = 19;
-			this.groupBox5.TabStop = false;
-			this.groupBox5.Text = "Hantera anteckningar";
-			// 
-			// btnNewNote
-			// 
-			this.btnNewNote.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left)));
-			this.btnNewNote.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.btnNewNote.Location = new System.Drawing.Point(24, 16);
-			this.btnNewNote.Name = "btnNewNote";
-			this.btnNewNote.Size = new System.Drawing.Size(136, 32);
-			this.btnNewNote.TabIndex = 2;
-			this.btnNewNote.Text = "Ny anteckning...";
-			this.btnNewNote.Click += new System.EventHandler(this.btnNewNote_Click);
-			// 
-			// btnPrintReciet
-			// 
-			this.btnPrintReciet.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.btnPrintReciet.Location = new System.Drawing.Point(264, 16);
-			this.btnPrintReciet.Name = "btnPrintReciet";
-			this.btnPrintReciet.Size = new System.Drawing.Size(136, 32);
-			this.btnPrintReciet.TabIndex = 21;
-			this.btnPrintReciet.Text = "Skriv ut kvitto...";
-			this.btnPrintReciet.Click += new System.EventHandler(this.btnPrintReciet_Click);
-			// 
-			// groupBox6
-			// 
-			this.groupBox6.Controls.Add(this.btnClearSearchPatient);
-			this.groupBox6.Location = new System.Drawing.Point(8, 280);
-			this.groupBox6.Name = "groupBox6";
-			this.groupBox6.Size = new System.Drawing.Size(280, 56);
-			this.groupBox6.TabIndex = 20;
-			this.groupBox6.TabStop = false;
-			this.groupBox6.Text = "Sök patient";
-			// 
-			// btnClearSearchPatient
-			// 
-			this.btnClearSearchPatient.Location = new System.Drawing.Point(248, 24);
-			this.btnClearSearchPatient.Name = "btnClearSearchPatient";
-			this.btnClearSearchPatient.Size = new System.Drawing.Size(24, 24);
-			this.btnClearSearchPatient.TabIndex = 0;
-			this.btnClearSearchPatient.Text = "---";
-			this.btnClearSearchPatient.Click += new System.EventHandler(this.btnClearSearchPatient_Click);
-			// 
-			// tabControl
-			// 
-			this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.tabControl.Controls.Add(this.tabJournal);
-			this.tabControl.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.tabControl.ItemSize = new System.Drawing.Size(92, 23);
-			this.tabControl.Location = new System.Drawing.Point(0, 0);
-			this.tabControl.Name = "tabControl";
-			this.tabControl.SelectedIndex = 0;
-			this.tabControl.Size = new System.Drawing.Size(976, 648);
-			this.tabControl.TabIndex = 0;
-			// 
-			// Form1
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.BackColor = System.Drawing.Color.Gainsboro;
-			this.ClientSize = new System.Drawing.Size(976, 688);
-			this.Controls.Add(this.tabControl);
-			this.Menu = this.mainMenu1;
-			this.MinimumSize = new System.Drawing.Size(984, 722);
-			this.Name = "Form1";
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Doris Ruberg REHAB AB";
-			this.Load += new System.EventHandler(this.Form1_Load);
-			this.tabJournal.ResumeLayout(false);
-			this.groupBox3.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.dgPatients)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.dgNotes)).EndInit();
-			this.groupBox4.ResumeLayout(false);
-			this.groupBox5.ResumeLayout(false);
-			this.groupBox6.ResumeLayout(false);
-			this.tabControl.ResumeLayout(false);
-			this.ResumeLayout(false);
+            this.components = new System.ComponentModel.Container();
+            this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
+            this.menuFile = new System.Windows.Forms.MenuItem();
+            this.menuClose = new System.Windows.Forms.MenuItem();
+            this.menuTools = new System.Windows.Forms.MenuItem();
+            this.menuSettings = new System.Windows.Forms.MenuItem();
+            this.menuPrimula = new System.Windows.Forms.MenuItem();
+            this.menuBackup = new System.Windows.Forms.MenuItem();
+            this.menuItem1 = new System.Windows.Forms.MenuItem();
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.menyAddDiagnosisNumber = new System.Windows.Forms.MenuItem();
+            this.menuPrint = new System.Windows.Forms.MenuItem();
+            this.menuPrintReciet = new System.Windows.Forms.MenuItem();
+            this.menuItem5 = new System.Windows.Forms.MenuItem();
+            this.menuPreviewJournal = new System.Windows.Forms.MenuItem();
+            this.menuPrintJournal = new System.Windows.Forms.MenuItem();
+            this.menuHelp = new System.Windows.Forms.MenuItem();
+            this.menuHelpcontents = new System.Windows.Forms.MenuItem();
+            this.menuAbout = new System.Windows.Forms.MenuItem();
+            this.tabJournal = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnPrintJournal = new System.Windows.Forms.Button();
+            this.btnChangePatient = new System.Windows.Forms.Button();
+            this.btnNewPatient = new System.Windows.Forms.Button();
+            this.txtSearchPatient = new System.Windows.Forms.TextBox();
+            this.dgPatients = new CustomDataGrid.MyDataGrid();
+            this.dgNotes = new CustomDataGrid.MyDataGrid();
+            this.btnSign = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.cmbShowFiltered = new System.Windows.Forms.ComboBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.btnNewNote = new System.Windows.Forms.Button();
+            this.btnPrintReciet = new System.Windows.Forms.Button();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.btnClearSearchPatient = new System.Windows.Forms.Button();
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.tabJournal.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgPatients)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgNotes)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            this.tabControl.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // mainMenu1
+            // 
+            this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuFile,
+            this.menuTools,
+            this.menuPrint,
+            this.menuHelp});
+            // 
+            // menuFile
+            // 
+            this.menuFile.Index = 0;
+            this.menuFile.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuClose});
+            this.menuFile.Text = "Arkiv";
+            // 
+            // menuClose
+            // 
+            this.menuClose.Index = 0;
+            this.menuClose.Text = "Avsluta";
+            this.menuClose.Click += new System.EventHandler(this.menuClose_Click);
+            // 
+            // menuTools
+            // 
+            this.menuTools.Index = 1;
+            this.menuTools.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuSettings,
+            this.menuPrimula,
+            this.menuBackup,
+            this.menuItem1,
+            this.menuItem2});
+            this.menuTools.Text = "Verktyg";
+            // 
+            // menuSettings
+            // 
+            this.menuSettings.Index = 0;
+            this.menuSettings.Text = "Inställningar...";
+            this.menuSettings.Click += new System.EventHandler(this.menuSettings_Click);
+            // 
+            // menuPrimula
+            // 
+            this.menuPrimula.Index = 1;
+            this.menuPrimula.Text = "Primula...";
+            this.menuPrimula.Click += new System.EventHandler(this.menuPrimula_Click);
+            // 
+            // menuBackup
+            // 
+            this.menuBackup.Index = 2;
+            this.menuBackup.Text = "Säkerhetskopiera...";
+            this.menuBackup.Click += new System.EventHandler(this.menuBackup_Click);
+            // 
+            // menuItem1
+            // 
+            this.menuItem1.Index = 3;
+            this.menuItem1.Text = "Statistik...";
+            this.menuItem1.Click += new System.EventHandler(this.menuItem1_Click);
+            // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 4;
+            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menyAddDiagnosisNumber});
+            this.menuItem2.Text = "Diagnosnummer";
+            // 
+            // menyAddDiagnosisNumber
+            // 
+            this.menyAddDiagnosisNumber.Index = 0;
+            this.menyAddDiagnosisNumber.Text = "Lägg till...";
+            this.menyAddDiagnosisNumber.Click += new System.EventHandler(this.menyAddDiagnosisNumber_Click);
+            // 
+            // menuPrint
+            // 
+            this.menuPrint.Index = 2;
+            this.menuPrint.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuPrintReciet,
+            this.menuItem5,
+            this.menuPreviewJournal,
+            this.menuPrintJournal});
+            this.menuPrint.Text = "Utskrifter";
+            // 
+            // menuPrintReciet
+            // 
+            this.menuPrintReciet.Index = 0;
+            this.menuPrintReciet.Text = "Skriv ut kvitto...";
+            this.menuPrintReciet.Click += new System.EventHandler(this.menuPrintReciet_Click);
+            // 
+            // menuItem5
+            // 
+            this.menuItem5.Index = 1;
+            this.menuItem5.Text = "-";
+            // 
+            // menuPreviewJournal
+            // 
+            this.menuPreviewJournal.Index = 2;
+            this.menuPreviewJournal.Text = "Förhandsgranska journal...";
+            this.menuPreviewJournal.Click += new System.EventHandler(this.menuPreviewJournal_Click);
+            // 
+            // menuPrintJournal
+            // 
+            this.menuPrintJournal.Index = 3;
+            this.menuPrintJournal.Text = "Skriv ut journal...";
+            this.menuPrintJournal.Click += new System.EventHandler(this.menuPrintJournal_Click);
+            // 
+            // menuHelp
+            // 
+            this.menuHelp.Enabled = false;
+            this.menuHelp.Index = 3;
+            this.menuHelp.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuHelpcontents,
+            this.menuAbout});
+            this.menuHelp.Text = "Hjälp";
+            // 
+            // menuHelpcontents
+            // 
+            this.menuHelpcontents.Index = 0;
+            this.menuHelpcontents.Text = "Hjälp";
+            // 
+            // menuAbout
+            // 
+            this.menuAbout.Index = 1;
+            this.menuAbout.Text = "Om...";
+            this.menuAbout.Click += new System.EventHandler(this.menuAbout_Click);
+            // 
+            // tabJournal
+            // 
+            this.tabJournal.BackColor = System.Drawing.Color.Gainsboro;
+            this.tabJournal.Controls.Add(this.groupBox3);
+            this.tabJournal.Controls.Add(this.txtSearchPatient);
+            this.tabJournal.Controls.Add(this.dgPatients);
+            this.tabJournal.Controls.Add(this.dgNotes);
+            this.tabJournal.Controls.Add(this.btnSign);
+            this.tabJournal.Controls.Add(this.groupBox4);
+            this.tabJournal.Controls.Add(this.groupBox5);
+            this.tabJournal.Controls.Add(this.groupBox6);
+            this.tabJournal.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabJournal.Location = new System.Drawing.Point(4, 27);
+            this.tabJournal.Name = "tabJournal";
+            this.tabJournal.Size = new System.Drawing.Size(968, 617);
+            this.tabJournal.TabIndex = 1;
+            this.tabJournal.Text = "Journalhantering";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.btnPrintJournal);
+            this.groupBox3.Controls.Add(this.btnChangePatient);
+            this.groupBox3.Controls.Add(this.btnNewPatient);
+            this.groupBox3.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox3.Location = new System.Drawing.Point(816, 24);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(144, 232);
+            this.groupBox3.TabIndex = 15;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Hantera patienter";
+            // 
+            // btnPrintJournal
+            // 
+            this.btnPrintJournal.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPrintJournal.Location = new System.Drawing.Point(16, 160);
+            this.btnPrintJournal.Name = "btnPrintJournal";
+            this.btnPrintJournal.Size = new System.Drawing.Size(120, 40);
+            this.btnPrintJournal.TabIndex = 22;
+            this.btnPrintJournal.Text = "Skriv ut journal...";
+            this.btnPrintJournal.Click += new System.EventHandler(this.btnPrintJournal_Click);
+            // 
+            // btnChangePatient
+            // 
+            this.btnChangePatient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnChangePatient.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnChangePatient.Location = new System.Drawing.Point(16, 104);
+            this.btnChangePatient.Name = "btnChangePatient";
+            this.btnChangePatient.Size = new System.Drawing.Size(120, 32);
+            this.btnChangePatient.TabIndex = 12;
+            this.btnChangePatient.Text = "Ändra upgift...";
+            this.btnChangePatient.Click += new System.EventHandler(this.btnChangePatient_Click);
+            // 
+            // btnNewPatient
+            // 
+            this.btnNewPatient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnNewPatient.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNewPatient.Location = new System.Drawing.Point(16, 48);
+            this.btnNewPatient.Name = "btnNewPatient";
+            this.btnNewPatient.Size = new System.Drawing.Size(120, 32);
+            this.btnNewPatient.TabIndex = 11;
+            this.btnNewPatient.Text = "Ny patient...";
+            this.btnNewPatient.Click += new System.EventHandler(this.btnNewPatient_Click);
+            // 
+            // txtSearchPatient
+            // 
+            this.txtSearchPatient.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSearchPatient.Location = new System.Drawing.Point(16, 304);
+            this.txtSearchPatient.Name = "txtSearchPatient";
+            this.txtSearchPatient.Size = new System.Drawing.Size(224, 26);
+            this.txtSearchPatient.TabIndex = 10;
+            this.txtSearchPatient.TextChanged += new System.EventHandler(this.txtSearchPatient_TextChanged);
+            // 
+            // dgPatients
+            // 
+            this.dgPatients.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgPatients.DataMember = "";
+            this.dgPatients.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgPatients.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+            this.dgPatients.Location = new System.Drawing.Point(0, 0);
+            this.dgPatients.Name = "dgPatients";
+            this.dgPatients.ParentRowsVisible = false;
+            this.dgPatients.ReadOnly = true;
+            this.dgPatients.RowHeadersVisible = false;
+            this.dgPatients.Size = new System.Drawing.Size(808, 272);
+            this.dgPatients.TabIndex = 6;
+            this.dgPatients.SizeChanged += new System.EventHandler(this.dgPatients_SizeChanged);
+            this.dgPatients.DoubleClick += new System.EventHandler(this.dgPatients_DoubleClick);
+            this.dgPatients.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgPatients_MouseDown);
+            this.dgPatients.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dgPatients_MouseUp);
+            // 
+            // dgNotes
+            // 
+            this.dgNotes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgNotes.DataMember = "";
+            this.dgNotes.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgNotes.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+            this.dgNotes.Location = new System.Drawing.Point(0, 344);
+            this.dgNotes.Name = "dgNotes";
+            this.dgNotes.ParentRowsVisible = false;
+            this.dgNotes.ReadOnly = true;
+            this.dgNotes.RowHeadersVisible = false;
+            this.dgNotes.Size = new System.Drawing.Size(968, 280);
+            this.dgNotes.TabIndex = 0;
+            this.dgNotes.SizeChanged += new System.EventHandler(this.dgNotes_SizeChanged);
+            this.dgNotes.DoubleClick += new System.EventHandler(this.dgNotes_DoubleClick);
+            this.dgNotes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgNotes_MouseDown);
+            this.dgNotes.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dgNotes_MouseUp);
+            // 
+            // btnSign
+            // 
+            this.btnSign.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSign.Location = new System.Drawing.Point(464, 296);
+            this.btnSign.Name = "btnSign";
+            this.btnSign.Size = new System.Drawing.Size(88, 32);
+            this.btnSign.TabIndex = 1;
+            this.btnSign.Text = "Signera";
+            this.btnSign.Click += new System.EventHandler(this.btnSign_Click);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.cmbShowFiltered);
+            this.groupBox4.Location = new System.Drawing.Point(728, 280);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(232, 56);
+            this.groupBox4.TabIndex = 18;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Filtrera anteckningar";
+            // 
+            // cmbShowFiltered
+            // 
+            this.cmbShowFiltered.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbShowFiltered.Location = new System.Drawing.Point(16, 24);
+            this.cmbShowFiltered.Name = "cmbShowFiltered";
+            this.cmbShowFiltered.Size = new System.Drawing.Size(200, 24);
+            this.cmbShowFiltered.TabIndex = 0;
+            this.cmbShowFiltered.Text = "Välj filter här...";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.btnNewNote);
+            this.groupBox5.Controls.Add(this.btnPrintReciet);
+            this.groupBox5.Location = new System.Drawing.Point(296, 280);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(416, 56);
+            this.groupBox5.TabIndex = 19;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Hantera anteckningar";
+            // 
+            // btnNewNote
+            // 
+            this.btnNewNote.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnNewNote.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNewNote.Location = new System.Drawing.Point(24, 16);
+            this.btnNewNote.Name = "btnNewNote";
+            this.btnNewNote.Size = new System.Drawing.Size(136, 32);
+            this.btnNewNote.TabIndex = 2;
+            this.btnNewNote.Text = "Ny anteckning...";
+            this.btnNewNote.Click += new System.EventHandler(this.btnNewNote_Click);
+            // 
+            // btnPrintReciet
+            // 
+            this.btnPrintReciet.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPrintReciet.Location = new System.Drawing.Point(264, 16);
+            this.btnPrintReciet.Name = "btnPrintReciet";
+            this.btnPrintReciet.Size = new System.Drawing.Size(136, 32);
+            this.btnPrintReciet.TabIndex = 21;
+            this.btnPrintReciet.Text = "Skriv ut kvitto...";
+            this.btnPrintReciet.Click += new System.EventHandler(this.btnPrintReciet_Click);
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.btnClearSearchPatient);
+            this.groupBox6.Location = new System.Drawing.Point(8, 280);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(280, 56);
+            this.groupBox6.TabIndex = 20;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Sök patient";
+            // 
+            // btnClearSearchPatient
+            // 
+            this.btnClearSearchPatient.Location = new System.Drawing.Point(248, 24);
+            this.btnClearSearchPatient.Name = "btnClearSearchPatient";
+            this.btnClearSearchPatient.Size = new System.Drawing.Size(24, 24);
+            this.btnClearSearchPatient.TabIndex = 0;
+            this.btnClearSearchPatient.Text = "---";
+            this.btnClearSearchPatient.Click += new System.EventHandler(this.btnClearSearchPatient_Click);
+            // 
+            // tabControl
+            // 
+            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl.Controls.Add(this.tabJournal);
+            this.tabControl.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabControl.ItemSize = new System.Drawing.Size(92, 23);
+            this.tabControl.Location = new System.Drawing.Point(0, 0);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(976, 648);
+            this.tabControl.TabIndex = 0;
+            // 
+            // Form1
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.BackColor = System.Drawing.Color.Gainsboro;
+            this.ClientSize = new System.Drawing.Size(976, 688);
+            this.Controls.Add(this.tabControl);
+            this.Menu = this.mainMenu1;
+            this.MinimumSize = new System.Drawing.Size(984, 722);
+            this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Doris Ruberg REHAB AB";
+            this.Load += new System.EventHandler(this.Form1_Load);
+            this.tabJournal.ResumeLayout(false);
+            this.tabJournal.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgPatients)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgNotes)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
+            this.ResumeLayout(false);
 
 		}
 		#endregion
@@ -1249,6 +1253,11 @@ namespace RehabLight
 		{
 			Utils.AutoSizeDataGrid(null, dgPatients, this.BindingContext, 0);
 		}
+
+        private void menuAbout_Click(object sender, EventArgs e)
+        {
+
+        }
 		
 	}
 }
